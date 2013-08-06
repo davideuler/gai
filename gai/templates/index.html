@@ -1,0 +1,93 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<head>
+  <title>{{ site_title }} / Yet Another URL Shortening Service</title>
+  <style type="text/css">
+    body {
+      font-family: sans-serif;
+      background: #f3f3f3;
+      color: #555;
+    }
+    .container {
+      width: 800px;
+      margin: 0 auto;
+    }
+    #main {
+      margin-top: 80px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background: #fbfbfb;
+    }
+    #main h1 {
+      text-align: center;
+      font-size: 48px;
+      margin: 0;
+    }
+    #id_origin {
+      color: #555;
+      width: 680px;
+      font-family: sans-serif;
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 16px;
+      transition: all 0.5s ease;
+    }
+    #id_origin:focus {
+      box-shadow: inset 0 0 4px #ccc;
+      border: 1px solid #aaa;
+    }
+    input[type=submit] {
+      color: #555;
+      font-family: sans-serif;
+      font-size: 16px;
+      background: #f3f3f3;
+      width: 97px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.5s ease;
+    }
+    input[type=submit]:hover {
+      border: 1px solid #aaa;
+      background: #fbfbfb;
+    }
+    #result {
+      font-size: 18px;
+      font-weight: bold;
+      background: #fbfbfb;
+      margin: 14px auto;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      color: #555;
+      font-family: sans-serif;
+      display: block;
+      width: 20em;
+      padding: 6px;
+      text-align: center;
+    }
+    #errors p {
+      color: #BD2D30;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div id="main" class="container">
+  <h1>{{ site_title }}</h1>
+  <p style="text-align:center">{{ site_subtitle|safe }}</p>
+  <form id="shorten" action="/a/shorten" method="post">
+    {% csrf_token %}
+    {{ form.origin }}
+    <input id="submit" type="submit" value="Shorten">
+    <input id="result" type="text">
+    <div id="errors">
+      <p id="error-invalid">Please enter a valid URL.</p>
+      <p id="error-busy">The server is busy, please retry later.</p>
+    </div>
+  </form>
+</div>
+<footer class="container">
+  <p><small>Powered by Gai {{ version }}, shortened <span id="amount">{{ amount_of_urls }}</span> urls that have been accessed {{ total_access_count }} times.</small></p>
+</footer>
+<script src="{% static "jquery.min.js" %}"></script>
+<script src="{% static "functions.js" %}"></script>
+</body>
